@@ -16,9 +16,6 @@
 
 #pragma once
 
-/* Turn off effects when suspended */
-#define RGB_DISABLE_WHEN_USB_SUSPENDED
-
 /* Encoder Configuration */
 #define ENCODER_DEFAULT_POS 0x3
 #define ENCODER_MAP_KEY_DELAY 2
