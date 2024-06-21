@@ -71,6 +71,7 @@
 /* Factory test keys */
 #define FN_KEY_1 MO(1)
 #define FN_KEY_2 MO(3)
+#define FN_KEY_3 MO(4) // Layer 'KCF' defined in keymap.c, Tommy, 2024-06-21
 #define FN_BL_TRIG_KEY KC_END
 
 #define P2P4G_CELAR_MASK 0
