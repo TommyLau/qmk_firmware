@@ -78,6 +78,7 @@
 #endif
 
 /* Factory test keys */
-#define FN_KEY_3 MO(4)
+#define FN_KEY_2 MO(4) // Add FN_KEY_2, otherwise, FN + J + Z won't work, Tommy, 2024-07-10
+#define FN_Z_KEY RGB_RMOD // When FN2 enabled, Z becomes RGB_RMOD, check 'KCF' layer, Tommy, 2024-07-11
 
 #define MATRIX_IO_DELAY 10
