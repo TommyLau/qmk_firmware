@@ -154,6 +154,10 @@ void process_record_factory_reset(uint16_t keycode, keyrecord_t *record) {
             }
             break;
         case KC_Z:
+#if defined(FN_Z_KEY)
+        case FN_Z_KEY:
+        // Add FN_Z_KEY for keyboard reset, Tommy, 2024-12-05
+#endif
             if (record->event.pressed) {
                 factory_reset_state |= KEY_PRESS_Z;
                 if (factory_reset_state == 0x07) factory_timer_start();

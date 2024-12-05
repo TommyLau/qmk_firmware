@@ -91,3 +91,4 @@
 
 /* Factory test keys */
 #define FN_KEY1 MO(4)
+#define FN_Z_KEY RGB_RMOD // When FN2 enabled, Z becomes RGB_RMOD, check 'KCF' layer, Tommy, 2024-12-05
