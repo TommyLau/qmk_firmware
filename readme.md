@@ -20,4 +20,14 @@ make keychron/v1_max/ansi_encoder:tommy:flash
 ```
 
 Source
-keychron/v1_max/ansi_encoder/keymaps/tommy
+keyboards/keychron/v1_max/ansi_encoder/keymaps/tommy
+
+## Keychron K7 Max
+
+```sh
+make keychron/k7_max/ansi/rgb:tommy
+make keychron/k7_max/ansi/rgb:tommy:flash
+```
+
+Source
+keyboards/keychron/k7_max/ansi/rgb/keymaps/tommy
