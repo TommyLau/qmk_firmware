@@ -23,9 +23,9 @@
     "encoder": {
         "rotary": [
             {
-	        "pin_a": "B15",
-	        "pin_b": "B14"
-	    }
+                "pin_a": "B15",
+                "pin_b": "B14"
+            }
         ]
     },
     "matrix_pins": {

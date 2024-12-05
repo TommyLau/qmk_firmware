@@ -18,9 +18,10 @@
 
 #define _CHIBIOS_HAL_CONF_VER_8_0_
 
+#define HAL_USE_SPI TRUE
+
 #ifdef LK_WIRELESS_ENABLE
 #    define HAL_USE_RTC TRUE
-#    define HAL_USE_SPI TRUE
 #endif
 
 #if defined(LK_WIRELESS_ENABLE) || defined(ENCODER_ENABLE)

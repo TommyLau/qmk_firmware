@@ -140,12 +140,6 @@ void set_transport(transport_t new_transport) {
                 p24g_transport_enable(false);
                 wireless_disconnect();
                 lpm_timer_stop();
-#ifdef NKRO_ENABLE
-#    if defined(WIRELESS_NKRO_ENABLE)
-                nkro.bluetooth = keymap_config.nkro;
-#    endif
-                keymap_config.nkro = nkro.usb;
-#endif
                 break;
 
             case TRANSPORT_BLUETOOTH:
@@ -154,14 +148,6 @@ void set_transport(transport_t new_transport) {
                 bt_transport_enable(true);
                 usb_transport_enable(false);
                 lpm_timer_reset();
-#if defined(NKRO_ENABLE)
-                nkro.usb = keymap_config.nkro;
-#    if defined(WIRELESS_NKRO_ENABLE)
-                keymap_config.nkro = nkro.bluetooth;
-#    else
-                keymap_config.nkro = FALSE;
-#    endif
-#endif
                 break;
 
             case TRANSPORT_P2P4:
@@ -170,14 +156,6 @@ void set_transport(transport_t new_transport) {
                 p24g_transport_enable(true);
                 usb_transport_enable(false);
                 lpm_timer_reset();
-#if defined(NKRO_ENABLE)
-                nkro.usb = keymap_config.nkro;
-#    if defined(WIRELESS_NKRO_ENABLE)
-                keymap_config.nkro = nkro.bluetooth;
-#    else
-                keymap_config.nkro = FALSE;
-#    endif
-#endif
                 break;
 
             default:
@@ -236,10 +214,19 @@ void transport_changed(transport_t new_transport) {
 void usb_remote_wakeup(void) {
     if (USB_DRIVER.state == USB_SUSPENDED) {
         while (USB_DRIVER.state == USB_SUSPENDED) {
+            wireless_pre_task();
+            if (get_transport() != TRANSPORT_USB) {
+                suspend_wakeup_init_quantum();
+                return;
+            }
             /* Do this in the suspended state */
             suspend_power_down(); // on AVR this deep sleeps for 15ms
             /* Remote wakeup */
-            if (suspend_wakeup_condition()) {
+            if (suspend_wakeup_condition()
+#ifdef ENCODER_ENABLE
+                || encoder_read()
+#endif
+                ) {
                 usbWakeupHost(&USB_DRIVER);
                 wait_ms(300);
 #ifdef MOUSEKEY_ENABLE

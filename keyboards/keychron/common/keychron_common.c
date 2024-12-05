@@ -31,9 +31,27 @@
 bool     is_siri_active = false;
 uint32_t siri_timer     = 0;
 
-static uint8_t mac_keycode[4] = {KC_LOPT, KC_ROPT, KC_LCMD, KC_RCMD};
+static uint8_t mac_keycode[4] = {
+    KC_LOPT,
+    KC_ROPT,
+    KC_LCMD,
+    KC_RCMD,
+};
 
-static key_combination_t key_comb_list[4] = {{2, {KC_LWIN, KC_TAB}}, {2, {KC_LWIN, KC_E}}, {3, {KC_LSFT, KC_LCMD, KC_4}}, {2, {KC_LWIN, KC_C}}};
+// clang-format off
+static key_combination_t key_comb_list[] = {
+    {2, {KC_LWIN, KC_TAB}},
+    {2, {KC_LWIN, KC_E}},
+    {3, {KC_LSFT, KC_LCMD, KC_4}},
+    {2, {KC_LWIN, KC_C}},
+#ifdef WIN_LOCK_SCREEN_ENABLE
+    {2, {KC_LWIN, KC_L}},
+#endif
+#ifdef MAC_LOCK_SCREEN_ENABLE
+    {3, {KC_LCTL, KC_LCMD, KC_Q}},
+#endif
+};
+// clang-format on
 
 bool process_record_keychron_common(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -77,6 +95,12 @@ bool process_record_keychron_common(uint16_t keycode, keyrecord_t *record) {
         case KC_FILE:
         case KC_SNAP:
         case KC_CTANA:
+#ifdef WIN_LOCK_SCREEN_ENABLE
+        case KC_WLCK:
+#endif
+#ifdef MAC_LOCK_SCREEN_ENABLE
+        case KC_MLCK:
+#endif
             if (record->event.pressed) {
                 for (uint8_t i = 0; i < key_comb_list[keycode - KC_TASK].len; i++) {
                     register_code(key_comb_list[keycode - KC_TASK].keycode[i]);
@@ -102,18 +126,21 @@ void keychron_common_task(void) {
 }
 
 #ifdef ENCODER_ENABLE
-static void encoder0_pad_cb(void *param) {
-    (void)param;
-    encoder_inerrupt_read(0);
+static void encoder_pad_cb(void *param) {
+    uint8_t index = (uint32_t)param;
+    encoder_inerrupt_read(index);
 }
 
 void encoder_cb_init(void) {
     pin_t encoders_pad_a[] = ENCODERS_PAD_A;
     pin_t encoders_pad_b[] = ENCODERS_PAD_B;
-    palEnableLineEvent(encoders_pad_a[0], PAL_EVENT_MODE_BOTH_EDGES);
-    palEnableLineEvent(encoders_pad_b[0], PAL_EVENT_MODE_BOTH_EDGES);
-    palSetLineCallback(encoders_pad_a[0], encoder0_pad_cb, NULL);
-    palSetLineCallback(encoders_pad_b[0], encoder0_pad_cb, NULL);
+    for (uint32_t i=0; i<NUM_ENCODERS; i++)
+    {
+        palEnableLineEvent(encoders_pad_a[i], PAL_EVENT_MODE_BOTH_EDGES);
+        palEnableLineEvent(encoders_pad_b[i], PAL_EVENT_MODE_BOTH_EDGES);
+        palSetLineCallback(encoders_pad_a[i], encoder_pad_cb, (void*)i);
+        palSetLineCallback(encoders_pad_b[i], encoder_pad_cb, (void*)i);
+    }
 }
 #endif
 
@@ -143,7 +170,7 @@ void get_support_feature(uint8_t *data) {
         ;
 }
 
-bool via_command_kb(uint8_t *data, uint8_t length) {
+bool kc_raw_hid_rx(uint8_t *data, uint8_t length) {
     // if (!raw_hid_receive_keychron(data, length))
     //     return false;
     switch (data[0]) {
@@ -199,12 +226,13 @@ bool via_command_kb(uint8_t *data, uint8_t length) {
     return true;
 }
 
-#if !defined(VIA_ENABLE)
+#if defined(VIA_ENABLE)
+bool via_command_kb(uint8_t *data, uint8_t length) {
+    return kc_raw_hid_rx(data, length);
+}
+#else
 void raw_hid_receive(uint8_t *data, uint8_t length) {
-    switch (data[0]) {
-        case RAW_HID_CMD:
-            via_command_kb(data, length);
-            break;
-    }
+    kc_raw_hid_rx(data, length);
 }
 #endif
+
