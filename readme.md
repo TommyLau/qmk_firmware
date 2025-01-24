@@ -29,5 +29,10 @@ make keychron/k7_max/ansi/rgb:tommy
 make keychron/k7_max/ansi/rgb:tommy:flash
 ```
 
+```sh
+qmk compile -kb keychron/k7_max/ansi/rgb -km tommy
+qmk flash -kb keychron/k7_max/ansi/rgb -km tommy
+```
+
 Source
 keyboards/keychron/k7_max/ansi/rgb/keymaps/tommy
