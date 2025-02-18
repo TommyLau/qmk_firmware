@@ -55,6 +55,7 @@ enum {
     PROF2,
     PROF3,
 #endif
+    KC_APFN, // Added by Tommy for Apple's Globe Key, 2025-02-18
     NEW_SAFE_RANGE,
 };
 

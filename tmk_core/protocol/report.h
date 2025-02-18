@@ -321,6 +321,8 @@ static inline uint16_t KEYCODE2CONSUMER(uint8_t key) {
             return AC_DESKTOP_SHOW_ALL_WINDOWS;
         case KC_LAUNCHPAD:
             return AC_SOFT_KEY_LEFT;
+        case KC_GLOBE: // Added by Tommy for Apple's Globe Key, 2025-02-18
+            return AC_NEXT_KEYBOARD_LAYOUT_SELECT;
         default:
             return 0;
     }

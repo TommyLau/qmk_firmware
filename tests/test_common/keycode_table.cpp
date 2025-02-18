@@ -225,6 +225,7 @@ std::map<uint16_t, std::string> KEYCODE_ID_TABLE = {
     {KC_ASSISTANT, "KC_ASSISTANT"},
     {KC_MISSION_CONTROL, "KC_MISSION_CONTROL"},
     {KC_LAUNCHPAD, "KC_LAUNCHPAD"},
+    {KC_GLOBE, "KC_GLOBE"}, // Added by Tommy for Apple's Globe Key, 2025-02-18
     {KC_MS_UP, "KC_MS_UP"},
     {KC_MS_DOWN, "KC_MS_DOWN"},
     {KC_MS_LEFT, "KC_MS_LEFT"},
