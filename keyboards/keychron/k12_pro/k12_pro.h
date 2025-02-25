@@ -51,5 +51,6 @@ enum {
     BT_HST3 = KC_TRNS,
     BAT_LVL = KC_TRNS,
 #endif
+    KC_APFN, // Added by Tommy for Apple's Globe Key, 2025-02-23
     NEW_SAFE_RANGE
 };

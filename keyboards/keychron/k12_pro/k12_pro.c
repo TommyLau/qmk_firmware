@@ -128,6 +128,13 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             }
             break;
 #endif
+        case KC_APFN: // Added by Tommy for Apple's Globe Key, 2025-02-18
+            if (record->event.pressed) {
+                register_code(KC_GLOBE);
+            } else {
+                unregister_code(KC_GLOBE);
+            }
+            return false; // Skip all further processing of this key
         default:
 #ifdef FACTORY_RESET_CHECK
             FACTORY_RESET_CHECK(keycode, record);
